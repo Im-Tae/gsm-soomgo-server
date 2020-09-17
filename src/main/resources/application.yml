@@ -1,0 +1,10 @@
+server:
+  port: 777
+
+spring:
+  data:
+    mongodb:
+      uri: ""
+
+  jackson:
+    default-property-inclusion: NON_NULL
