@@ -5,10 +5,13 @@ import java.time.LocalDateTime
 
 @Document("Board")
 data class Board(
+        val postList: ArrayList<Post>
+)
+
+data class Post(
         val grade: Int,
-        val data: String, // 계시글
-        val List:String,
-        val title: String,
-        val BDimage: String,
-        val Date: LocalDateTime
+        val postTitle: String,
+        val publisher: String,
+        val postDate: String,
+        val views: String
 )
