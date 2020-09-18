@@ -6,7 +6,7 @@ import java.time.LocalDateTime
 @Document("Board")
 data class Board(
         val grade: Int,
-        val data: String,
+        val data: String, // 계시글
         val List:String,
         val title: String,
         val BDimage: String,
