@@ -9,6 +9,7 @@ data class Board(
 )
 
 data class Post(
+        val id: Int,
         val grade: Int,
         val postTitle: String,
         val publisher: String,
