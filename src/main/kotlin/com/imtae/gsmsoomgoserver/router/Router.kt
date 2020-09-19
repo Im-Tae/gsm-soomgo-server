@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.router
 
-@Component
+//@Component
 class Router(
         private val userHandler: UserHandler,
         private val boardHandler: BoardHandler
