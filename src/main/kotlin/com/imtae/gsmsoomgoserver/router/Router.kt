@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Bean
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.router
 
-//@Component
+@Component
 class Router(
         private val userHandler: UserHandler,
         private val boardHandler: BoardHandler
@@ -16,11 +16,10 @@ class Router(
     fun routers() = router {
 
         "/user".nest {
-            GET("/")
-        }
-
-        "/board".nest {
-            GET("/")
+            GET("", userHandler::get)
+            POST("", userHandler::create)
+            DELETE("", userHandler::delete)
+            PATCH("", userHandler::update)
         }
     }
 }
