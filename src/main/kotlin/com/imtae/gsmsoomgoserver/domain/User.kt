@@ -1,10 +1,12 @@
 package com.imtae.gsmsoomgoserver.domain
 
+import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document
 
-@Document("User")
+@Document(collection = "User")
 data class User(
-        val email: String,
-        val name: String,
-        val image: String
+        @Id
+        val email: String = "",
+        val name: String = "",
+        val image: String = ""
 )
