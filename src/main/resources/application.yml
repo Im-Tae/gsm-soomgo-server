@@ -4,7 +4,7 @@ server:
 spring:
   data:
     mongodb:
-      uri: "mongodb://localhost:27017/jobtang"
+      uri: "mongodb://54.210.142.125:27017/jobtang"
 
   jackson:
     default-property-inclusion: NON_NULL

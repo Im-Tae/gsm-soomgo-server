@@ -1,5 +1,3 @@
-@file:Suppress("DEPRECATION")
-
 package com.imtae.gsmsoomgoserver.repository
 
 import com.imtae.gsmsoomgoserver.domain.User
