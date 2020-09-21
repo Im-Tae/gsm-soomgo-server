@@ -10,5 +10,7 @@ data class User(
         val name: String = "",
         val image: String = "",
         val grade: Int? = null,
+        val student_class: Int? = null,
+        val student_number: Int? = null,
         val introduce: String? = null
 )
