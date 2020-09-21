@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.imtae.gsmsoomgoserver.repository
 
 import io.jsonwebtoken.Jwts
