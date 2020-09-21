@@ -12,5 +12,10 @@ data class User(
         val grade: Int? = null,
         val student_class: Int? = null,
         val student_number: Int? = null,
+        val skills: List<Skill>? = null,
         val introduce: String? = null
+)
+
+data class Skill(
+        val skill: String
 )

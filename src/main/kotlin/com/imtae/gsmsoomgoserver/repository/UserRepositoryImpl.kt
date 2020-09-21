@@ -4,14 +4,12 @@ package com.imtae.gsmsoomgoserver.repository
 
 import com.imtae.gsmsoomgoserver.domain.User
 import com.mongodb.client.result.DeleteResult
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate
-import org.springframework.data.mongodb.core.exists
-import org.springframework.data.mongodb.core.findOne
+import org.springframework.data.mongodb.core.*
 import org.springframework.data.mongodb.core.query.Criteria.where
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.mongodb.core.query.isEqualTo
-import org.springframework.data.mongodb.core.remove
 import org.springframework.stereotype.Repository
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.kotlin.core.publisher.toMono
 import javax.annotation.PostConstruct
@@ -40,6 +38,10 @@ class UserRepositoryImpl(
             template.findOne(Query(where("email").isEqualTo(email)))
         else User().toMono()
     }
+
+    override fun filterUser(gradeFilter: String): Flux<User> =
+            if(gradeFilter.isNotEmpty()) template.find(Query(where("grade").isEqualTo(gradeFilter.toInt())))
+            else template.findAll(User::class.java)
 
     override fun create(user: Mono<User>): Mono<String> =
             user.map {

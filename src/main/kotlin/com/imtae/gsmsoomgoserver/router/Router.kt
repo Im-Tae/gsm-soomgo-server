@@ -22,6 +22,10 @@ class Router(
             PATCH("", userHandler::update)
         }
 
+        "/users".nest {
+            GET("", userHandler::getUsers)
+        }
+
         "/board".nest {
             GET("", boardHandler::get)
             POST("", boardHandler::post)

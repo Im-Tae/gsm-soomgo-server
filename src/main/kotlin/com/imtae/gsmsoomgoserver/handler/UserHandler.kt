@@ -9,8 +9,10 @@ import com.imtae.gsmsoomgoserver.domain.User
 import com.imtae.gsmsoomgoserver.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
+import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.BodyInserters.fromObject
 import org.springframework.web.reactive.function.server.ServerRequest
+import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.*
 import org.springframework.web.reactive.function.server.bodyToMono
 import java.lang.Exception
@@ -24,6 +26,12 @@ class UserHandler(
             userService.getUser(serverRequest.queryParam("access_token").orElse(""))
                     .flatMap { ok().body(fromObject(it)) }
                     .onErrorResume { badRequest().body(fromObject(ErrorResponse("404 NOT FOUND", it.message ?: "error"))) }
+
+    fun getUsers(serverRequest: ServerRequest) =
+            ok().body(userService.getUsers(serverRequest.queryParam("gradeFilter").orElse("")), User::class.java)
+                    .onErrorResume(Exception::class.java) {
+                        ServerResponse.badRequest().body(BodyInserters.fromObject(ErrorResponse("404 NOT FOUND", it.message ?: "error")))
+                    }
 
     fun create(serverRequest: ServerRequest) =
             userService.createUser(serverRequest.bodyToMono()).flatMap {
