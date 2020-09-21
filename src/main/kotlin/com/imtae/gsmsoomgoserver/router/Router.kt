@@ -16,11 +16,19 @@ class Router(
     fun routers() = router {
 
         "/user".nest {
-            GET("/")
+            GET("", userHandler::get)
+            POST("", userHandler::create)
+            DELETE("", userHandler::delete)
+            PATCH("", userHandler::update)
+        }
+
+        "/users".nest {
+            GET("", userHandler::getUsers)
         }
 
         "/board".nest {
-            GET("/")
+            GET("", boardHandler::get)
+            POST("", boardHandler::post)
         }
     }
 }

@@ -1,16 +1,25 @@
+@file:Suppress("DEPRECATION")
+
 package com.imtae.gsmsoomgoserver.handler
 
+import com.imtae.gsmsoomgoserver.domain.Board
+import com.imtae.gsmsoomgoserver.domain.ErrorResponse
+import com.imtae.gsmsoomgoserver.domain.Response
 import com.imtae.gsmsoomgoserver.service.BoardService
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
+import org.springframework.web.reactive.function.BodyInserters
+import org.springframework.web.reactive.function.server.ServerRequest
+import org.springframework.web.reactive.function.server.ServerResponse
+import org.springframework.web.reactive.function.server.ServerResponse.ok
+import org.springframework.web.reactive.function.server.bodyToMono
+import java.lang.Exception
 
 @Component
 class BoardHandler(
         private val boardService: BoardService
 ) {
 
-<<<<<<< Updated upstream
-}
-=======
     fun get(serverRequest: ServerRequest) =
             ok().body(boardService.getBoard(serverRequest.queryParam("gradeFilter").orElse("")), Board::class.java)
                     .onErrorResume(Exception::class.java) {
@@ -44,5 +53,3 @@ class BoardHandler(
                         ?: "error")))
             }
 }
-
->>>>>>> Stashed changes

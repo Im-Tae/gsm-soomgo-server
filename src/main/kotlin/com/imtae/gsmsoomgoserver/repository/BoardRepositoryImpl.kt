@@ -1,11 +1,7 @@
 package com.imtae.gsmsoomgoserver.repository
 
-<<<<<<< Updated upstream
-import org.springframework.data.mongodb.core.ReactiveMongoTemplate
-=======
 import com.imtae.gsmsoomgoserver.domain.Board
 import com.imtae.gsmsoomgoserver.domain.Post
-import com.imtae.gsmsoomgoserver.domain.User
 import com.mongodb.client.result.DeleteResult
 import org.springframework.data.mongodb.core.*
 import org.springframework.data.mongodb.core.FindAndModifyOptions.options
@@ -13,28 +9,29 @@ import org.springframework.data.mongodb.core.query.Criteria.where
 import org.springframework.data.mongodb.core.query.Query
 import org.springframework.data.mongodb.core.query.Update
 import org.springframework.data.mongodb.core.query.isEqualTo
->>>>>>> Stashed changes
 import org.springframework.stereotype.Repository
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
+import reactor.kotlin.core.publisher.toMono
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.annotation.PostConstruct
 
 @Repository
 class BoardRepositoryImpl(
-        private val template: ReactiveMongoTemplate
+        private val reactiveTemplate: ReactiveMongoTemplate,
+        private val mongoTemplate: MongoTemplate,
+        private val jwtRepository: JWTRepository
 ) : BoardRepository {
 
     @PostConstruct
     override fun initialBoard() {
-        template.collectionExists("Board").subscribe {
+        reactiveTemplate.collectionExists("Board").subscribe {
             if (!it) {
-                template.createCollection("Board")
+                reactiveTemplate.createCollection("Board")
                 println("Board Collection 생성 완료")
             }
         }
-<<<<<<< Updated upstream
-    }
-
-}
-=======
 
         reactiveTemplate.collectionExists("Post").subscribe {
             if (!it) {
@@ -104,4 +101,3 @@ class BoardRepositoryImpl(
     private val getCurrentDate: String = SimpleDateFormat("yyyy-MM-dd").format(Date())
     private fun checkDataExist(email: String): Mono<Boolean> = reactiveTemplate.exists<User>(Query(where("_id").isEqualTo(email)))
 }
->>>>>>> Stashed changes
