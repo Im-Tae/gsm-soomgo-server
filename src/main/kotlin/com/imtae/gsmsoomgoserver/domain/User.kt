@@ -8,5 +8,7 @@ data class User(
         @Id
         val email: String = "",
         val name: String = "",
-        val image: String = ""
+        val image: String = "",
+        val grade: Int? = null,
+        val introduce: String? = null
 )

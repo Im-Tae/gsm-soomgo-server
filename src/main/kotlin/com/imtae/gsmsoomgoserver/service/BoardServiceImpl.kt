@@ -1,11 +1,17 @@
 package com.imtae.gsmsoomgoserver.service
 
+import com.imtae.gsmsoomgoserver.domain.Board
 import com.imtae.gsmsoomgoserver.repository.BoardRepository
 import org.springframework.stereotype.Component
+import reactor.core.publisher.Flux
+import reactor.core.publisher.Mono
 
 @Component
 class BoardServiceImpl(
         private val boardRepository: BoardRepository
 ) : BoardService {
 
+    override fun getBoard(gradeFilter: String): Flux<Board> = boardRepository.get(gradeFilter)
+
+    override fun createBoard(token: String, board: Mono<Board>): Mono<Board> = boardRepository.create(token, board)
 }

@@ -21,5 +21,10 @@ class Router(
             DELETE("", userHandler::delete)
             PATCH("", userHandler::update)
         }
+
+        "/board".nest {
+            GET("", boardHandler::get)
+            POST("", boardHandler::post)
+        }
     }
 }
