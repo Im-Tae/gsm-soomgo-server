@@ -2,6 +2,7 @@ package com.imtae.gsmsoomgoserver.repository
 
 import com.imtae.gsmsoomgoserver.domain.Board
 import com.imtae.gsmsoomgoserver.domain.Post
+import com.mongodb.client.result.DeleteResult
 import org.springframework.data.mongodb.core.*
 import org.springframework.data.mongodb.core.FindAndModifyOptions.options
 import org.springframework.data.mongodb.core.query.Criteria.where
@@ -57,6 +58,33 @@ class BoardRepositoryImpl(
                 it
             }
 
+    override fun delete(token: String, id: String): Mono<DeleteResult> {
+
+        val email = jwtRepository.decodeJWToken(token)
+
+        return if (email.isNotEmpty() && id.isNotEmpty())
+            reactiveTemplate.remove<Board>(Query(where("_id").isEqualTo(id.toInt()).and("email").isEqualTo(email))).toMono()
+        else Mono.empty()
+    }
+
+    override fun update(token: String, id: String, board: Mono<Board>): Mono<Any> = board.map {
+
+        val email = jwtRepository.decodeJWToken(token)
+
+        val update = Update()
+                .set("grade", it.grade)
+                .set("postTitle", it.postTitle)
+                .set("postContent", it.postContent)
+                .set("publisher", it.publisher)
+
+        val checkExist = reactiveTemplate.exists(Query(where("_id").isEqualTo(id.toInt()).and("email").isEqualTo(email)), Board::class.java)
+
+        if (email.isNotEmpty() && id.isNotEmpty() && checkExist == true.toMono()) {
+            reactiveTemplate.findAndModify(Query(where("_id").isEqualTo(id.toInt()).and("email").isEqualTo(email)), update ,Board::class.java).subscribe()
+            it.toMono()
+        } else null
+    }
+
     private fun getPostCount(): Int {
 
         val update = Update().inc("number", 1)
@@ -71,4 +99,5 @@ class BoardRepositoryImpl(
     }
 
     private val getCurrentDate: String = SimpleDateFormat("yyyy-MM-dd").format(Date())
+    private fun checkDataExist(email: String): Mono<Boolean> = reactiveTemplate.exists<User>(Query(where("_id").isEqualTo(email)))
 }
