@@ -45,7 +45,9 @@ class BoardHandler(
 
 
     fun update(serverRequest: ServerRequest) =
-            boardService.updateBoard(serverRequest.queryParam("access_token").orElse(""), serverRequest.queryParam("id").orElse(""), serverRequest.bodyToMono()).flatMap {
+            boardService.updateBoard(serverRequest.queryParam("access_token").orElse(""),
+                    serverRequest.queryParam("id").orElse(""),
+                    serverRequest.bodyToMono()).flatMap {
                 if (it != null) ServerResponse.status(HttpStatus.ACCEPTED).body(BodyInserters.fromObject(Response("201 ACCEPTED")))
                 else ServerResponse.badRequest().body(BodyInserters.fromObject(ErrorResponse("404 NOT FOUND", "")))
             }.onErrorResume(Exception::class.java) {

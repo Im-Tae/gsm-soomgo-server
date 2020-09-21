@@ -2,6 +2,7 @@ package com.imtae.gsmsoomgoserver.repository
 
 import com.imtae.gsmsoomgoserver.domain.Board
 import com.imtae.gsmsoomgoserver.domain.Post
+import com.imtae.gsmsoomgoserver.domain.User
 import com.mongodb.client.result.DeleteResult
 import org.springframework.data.mongodb.core.*
 import org.springframework.data.mongodb.core.FindAndModifyOptions.options
@@ -79,8 +80,8 @@ class BoardRepositoryImpl(
 
         val checkExist = reactiveTemplate.exists(Query(where("_id").isEqualTo(id.toInt()).and("email").isEqualTo(email)), Board::class.java)
 
-        if (email.isNotEmpty() && id.isNotEmpty() && checkExist == true.toMono()) {
-            reactiveTemplate.findAndModify(Query(where("_id").isEqualTo(id.toInt()).and("email").isEqualTo(email)), update ,Board::class.java).subscribe()
+        if (email.isNotEmpty() && id.isNotEmpty() && checkExist != false.toMono()) {
+            reactiveTemplate.findAndModify(Query(where("_id").isEqualTo(id.toInt()).and("email").isEqualTo(email)), update, Board::class.java).subscribe()
             it.toMono()
         } else null
     }
@@ -99,5 +100,4 @@ class BoardRepositoryImpl(
     }
 
     private val getCurrentDate: String = SimpleDateFormat("yyyy-MM-dd").format(Date())
-    private fun checkDataExist(email: String): Mono<Boolean> = reactiveTemplate.exists<User>(Query(where("_id").isEqualTo(email)))
 }
